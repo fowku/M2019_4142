@@ -1,0 +1,83 @@
+---
+title: "Cleaning the weather dataset"
+author: "Alexey Belyanin"
+output:
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Загружаем датасет из файла weather.rds
+
+```{r message = FALSE}
+library(dplyr)
+library(tidyr)
+library(knitr)
+weather <- readRDS("weather.rds")
+```
+
+В исходном файле мы имеем такую картину
+
+```{r echo = FALSE}
+  kable(weather[1:10, 1:10])
+```
+
+Для начала можно заметить, что в первом столбце просто пронумерованы строки, он бесполезен, удалим его. Так же переименуем столбцы X1 - X31 в 1-31
+
+```{r message = FALSE}
+  ourResult <- select(weather, -X)
+  names(ourResult)[4:34] <- '1':'31'
+```
+```{r echo = FALSE}
+  kable(ourResult[1:10, 1:9])
+```
+
+Далее перевернем таблицу, создадим столбец дня (колонки от 1 до 31) и столбец значения. После объединим дату в один столбец.
+```{r}
+  # Переворачиваем таблицу и создаем два столбца
+  ourResult <- gather(ourResult, key = day, value = value, '1' : '31')
+
+  # Приводим столбец дня к типу int
+  ourResult$day <- as.integer(ourResult$day)
+  
+  # Добавляем 0 в начало, если число меньше 10
+  ourResult <- mutate(ourResult, day = sprintf("%02d", day))
+  ourResult <- mutate(ourResult, month = sprintf("%02d", month))
+  
+  # Объединяем год, месяц и день в один столбец
+  ourResult <- unite(ourResult, date, year, month, day, sep = '-')
+```
+
+```{r echo = FALSE}
+  kable(ourResult[1:10, 1:3])
+```
+
+Теперь трансформируем по столбцу measure в ширь и отсортируем по дате
+
+```{r}
+  ourResult <- spread(ourResult, key = measure, value = value)
+  ourResult <- ourResult[order(ourResult$date),]
+```
+
+```{r echo = FALSE}
+  kable(ourResult[1:20, 1:5], caption = 'Здесь вывыдены только первые 5 столбцов для наглядности')
+```
+
+```{r include = FALSE}
+  tableCopy <- ourResult
+```
+
+Последним шагом избавимся от пустых строк
+```{r}
+  ourResult <- na.omit(ourResult)
+```
+
+```{r echo = FALSE}
+  kable(tableCopy[368:378, 1:5], caption = 'Было')
+```
+
+```{r echo = FALSE}
+  kable(ourResult[350:360, 1:5], caption = 'Стало')
+```

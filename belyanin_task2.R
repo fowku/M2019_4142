@@ -11,7 +11,7 @@ calculateColumns <- function(dataFrame) {
   calculatedResult <- list()
   
   for (column in names(dataFrame)) {
-    if (class(dataFrame[[column]]) == 'numeric') {
+    if (class(dataFrame[[column]]) == 'numeric' || class(dataFrame[[column]]) == 'integer') {
       calculatedResult[[column]] <- sum(dataFrame[[column]])
       next
     }
@@ -25,4 +25,4 @@ calculateColumns <- function(dataFrame) {
   return(calculatedResult)
 }
 
-print(subsetDataFrame(gapminder, , 1))
+print(subsetDataFrame(gapminder, 1:30, 1))
