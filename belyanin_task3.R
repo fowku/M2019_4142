@@ -18,6 +18,4 @@ calculateColumn <- function(element, calculationFunction) {
   }
 }
 
-# print(subsetDataFrame(gapminder, 1:30, 1:5, sum))
-
-subsetDataFrame(gapminder, 1:30, 1:5, sum)
+print(subsetDataFrame(gapminder, 1:30, 1:5, sum))

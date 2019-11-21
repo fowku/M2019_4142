@@ -11,7 +11,7 @@ calculateColumns <- function(dataFrame) {
   calculatedResult <- list()
   
   for (column in names(dataFrame)) {
-    if (class(dataFrame[[column]]) == 'numeric' || class(dataFrame[[column]]) == 'integer') {
+    if (class(dataFrame[[column]]) == 'numeric') {
       calculatedResult[[column]] <- sum(dataFrame[[column]])
       next
     }
