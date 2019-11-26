@@ -14,6 +14,7 @@ knitr::opts_chunk$set(echo = TRUE)
 ```{r message = FALSE}
 library(dplyr)
 library(tidyr)
+library(tidyverse)
 library(knitr)
 weather <- readRDS("weather.rds")
 ```
@@ -69,15 +70,23 @@ weather <- readRDS("weather.rds")
   tableCopy <- ourResult
 ```
 
-Последним шагом избавимся от пустых строк
-```{r}
+Последним шагом избавимся от пустых строк, очистим от T столбец PrecipitationIn и заменим в Events пустые строки на '-', а потом приведем к типу factor. Приведем столбцы к типу numeric, изменим тип даты на Date. 
+```{r message = FALSE}
   ourResult <- na.omit(ourResult)
+  ourResult <- filter(ourResult, PrecipitationIn != 'T')
+  ourResult$Events <- ifelse(str_length(ourResult$Events) > 0, ourResult$Events, '-')
+  ourResult$Events <- as.factor(ourResult$Events)
+  ourResult$date <- as.Date(ourResult$date)
+  ourResult <- mutate_at(ourResult, vars(CloudCover, Max.Dew.PointF:WindDirDegrees), list(as.numeric))
+  
 ```
 
 ```{r echo = FALSE}
-  kable(tableCopy[368:378, 1:5], caption = 'Было')
+  kable(tableCopy[358:368, 1:5], caption = 'Было')
 ```
 
 ```{r echo = FALSE}
-  kable(ourResult[350:360, 1:5], caption = 'Стало')
+  kable(ourResult[300:310, 1:5], caption = 'Стало')
+  kable(summary(ourResult))
+  kable(ourResult)
 ```
