@@ -11,11 +11,11 @@ subsetDataFrame <- function(dataFrame, rowSelection, columnSelection, calculatio
 
 # Calculates sum for numerical columns, and frequency table for strings
 calculateColumn <- function(element, calculationFunction) {
-  if (class(element) == 'numeric' || class(element) == 'integer') {
-     return(matrix(element) %>% calculationFunction()) # ask a question about pipe thing, it seems to be working incorrectly
+  if (is.numeric(element) || is.integer(element)) {
+      return(matrix(element) %>% calculationFunction())
   }
   
-  if (class(element) == 'character' || class(element) == 'logical' || class(element) == 'factor') {
+  if (is.character(element) || is.logical(element) || is.factor(element)) {
     element %>% table() %>% return()
   }
 }

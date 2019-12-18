@@ -11,12 +11,12 @@ calculateColumns <- function(dataFrame) {
   calculatedResult <- list()
   
   for (column in names(dataFrame)) {
-    if (class(dataFrame[[column]]) == 'numeric') {
+    if (is.numeric(dataFrame[[column]])) {
       calculatedResult[[column]] <- sum(dataFrame[[column]])
       next
     }
     
-    if (class(dataFrame[[column]]) == 'character' || class(dataFrame[[column]]) == 'logical' || class(dataFrame[[column]]) == 'factor') {
+    if (is.character(dataFrame[[column]]) || is.logical(dataFrame[[column]]) || is.factor(dataFrame[[column]])) {
       calculatedResult[[column]] <- table(dataFrame[[column]])
       next
     }
