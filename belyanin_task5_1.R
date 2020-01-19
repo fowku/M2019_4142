@@ -1,7 +1,12 @@
-# Subset data by rows and columns, execute calculations for columns.
+library(tidyverse)
+library(gapminder)
+
+# Subset data by rows and columns, execute calculations for columns
 # Returns list of subsetted dataframe and column calculated list
 subsetDataFrame <- function(dataFrame, rowSelection, columnSelection) {
-  subsettedDataFrame <- dataFrame[rowSelection, columnSelection]
+  subsettedDataFrame <- dataFrame %>% 
+    select(columnSelection) %>% 
+    slice(rowSelection)
   
   list(subsettedDataFrame, subsettedDataFrame %>% calculateColumns()) %>% return()
 }
