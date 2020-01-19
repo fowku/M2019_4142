@@ -17,8 +17,8 @@ subsetDataFrame <- function(dataFrame, rowSelection, columnSelection, calculatio
 
 # Calculates sum for numerical columns, and frequency table for strings
 calculateColumn <- function(element, calculationFunction) {
-  if (is.numeric(element) || is.integer(element)) {
-      return(matrix(element) %>% calculationFunction())
+  if (is.numeric(element)) {
+      return(element %>% calculationFunction())
   }
 
   if (is.character(element) || is.logical(element) || is.factor(element)) {
