@@ -3,37 +3,38 @@ library(ggplot2)
 library(gapminder)
 
 # presintation example
-ggplot(gapminder, aes(x = gdpPercap,
-                      y = lifeExp,
-                      size = pop,
-                      color = continent)
-       ) + 
-  facet_wrap(.~year) +
-  geom_point() + 
-  scale_x_log10()
+# ggplot(gapminder, aes(x = gdpPercap,
+#                       y = lifeExp,
+#                       size = pop,
+#                       color = continent)
+#        ) + 
+#   facet_wrap(.~year) +
+#   geom_point() + 
+#   scale_x_log10()
 
 # my transformations
-ggplot(gapminder, aes(x = gdpPercap,
-                      y = lifeExp,
-                      size = pop,
-                      color = continent)
-       ) +
-  facet_wrap(.~year) +
-  geom_point() +
-  scale_x_log10() +
-  ggtitle("Title something") +
-  xlab("per-capita GDP") +
-  ylab("life expectancy at birth") +
-  theme_linedraw()
+# ggplot(gapminder, aes(x = gdpPercap,
+#                       y = lifeExp,
+#                       size = pop,
+#                       color = continent)
+#        ) +
+#   facet_wrap(.~year) +
+#   geom_point() +
+#   scale_x_log10() +
+#   ggtitle("Title something") +
+#   xlab("per-capita GDP") +
+#   ylab("life expectancy at birth") +
+#   theme_linedraw()
 
 # :)
-gapminder %>% filter(country == 'Pakistan' | country == 'Israel') %>% 
+gapminder %>% filter(country == 'Pakistan' | country == 'Israel') %>%
+  mutate(pop = pop/1000) %>%
 ggplot(aes(x = year,
            y = pop,
            size = lifeExp,
            color = country)
        ) +
-  geom_line() + 
+  geom_line() +
   scale_x_log10() +
   ggtitle("Title something") +
   xlab("year") +
