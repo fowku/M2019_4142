@@ -80,6 +80,7 @@ server <- function(input, output) {
       addProviderTiles(providers$CartoDB.Positron) %>%
       addCircleMarkers(lng = ~longitude,
                        lat = ~latitude,
+                       radius = 1,
                        color = ~colors(neighbourhood_group))
   })
   
