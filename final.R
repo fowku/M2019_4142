@@ -35,6 +35,14 @@ ui <- bootstrapPage(
                             value = 200,
                             step = 1
                 ),
+                
+                sliderInput(inputId = 'price',
+                            label = 'Price',
+                            min = min(nyc$price),
+                            max = max(nyc$price),
+                            value = c(min(nyc$price), max(nyc$price)),
+                            step = 1
+                ),
 
                 selectInput(inputId = 'district',
                             label = 'District',
@@ -54,6 +62,7 @@ ui <- bootstrapPage(
 server <- function(input, output) {
   newData <- reactive({
     tempData <- nyc %>% slice(1:input$houses)
+    tempData <- tempData %>% filter(price >= input$price[1] & price <= input$price[2])
     
     if (input$district != 'All') {
       tempData <- tempData %>% filter(neighbourhood_group == input$district)
